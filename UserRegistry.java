@@ -1,7 +1,6 @@
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 
 public class UserRegistry {
     private HashMap<UserIdentifier, User> users;
@@ -11,15 +10,14 @@ public class UserRegistry {
         nextId = 1;
     }
     public void registerUser(String login, String password) {
+        UserIdentifier identifier = new UserIdentifier(nextId, login);
+        User newUser = new User(identifier, password);
         for (User user : users.values()) {
             if (user.getIdentifier().getName().equals(login)) {
                 System.out.println("Користувач вже існує");
                 return;
             }
         }
-        UserIdentifier identifier =
-                new UserIdentifier(nextId, login);
-        User newUser = new User(identifier, password);
         users.put(identifier, newUser);
         nextId++;
         System.out.println("Користувач зареєстрований");
@@ -42,30 +40,6 @@ public class UserRegistry {
                 return;
             }
         }
-    }
-    public boolean isUserRegistered(String login) {
-        for (User user : users.values()) {
-            if (user.getIdentifier().getName().equals(login)) {
-                return true;
-            }
-        }
-        return false;
-    }
-    public void removeUser(int id) {
-        UserIdentifier removeKey = null;
-        for (Map.Entry<UserIdentifier, User> entry : users.entrySet()) {
-            if (entry.getKey().getId() == id) {
-                removeKey = entry.getKey();
-                break;
-            }
-        }
-        if (removeKey != null) {
-            users.remove(removeKey);
-            System.out.println("Користувач видалений");
-        }
-    }
-    public void printTotalUniqueUsers() {
-        System.out.println("Унікальних користувачів: " + users.size());
     }
     public void displayAllUsers() {
         for (User user : users.values()) {
